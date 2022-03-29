@@ -33,9 +33,11 @@ let
     extraJupyterPath ? _: ""
     }:
     let
-      myPython = pkgs.python3.override {
+      myPython = pkgs.python3.override (old: {
         # packageOverrides = pythonself: pythonsuper: {
-        packageOverrides = final: prev: {
+          packageOverrides = pkgs.lib.composeExtensions
+              (old.packageOverrides or (_: _: {}))
+            (final: prev: {
           # todo override
           jupyter = prev.jupyter.overridePythonAttrs (oldAttrs: {
             inherit makeWrapperArgs;
@@ -49,8 +51,8 @@ let
           jupyter_console = prev.jupyter_console.overridePythonAttrs (oldAttrs: {
             inherit makeWrapperArgs;
           });
-        };
-      };
+        });
+      });
 
       makeWrapperArgs = [
         "--set JUPYTERLAB_DIR ${directory}"
