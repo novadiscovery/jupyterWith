@@ -10,6 +10,10 @@ let
       doCheck = false;
     });
 
+    openapi-core = pythonPackages.openapi-core.overridePythonAttrs (_:{
+      doCheck = false;
+    });
+
     jupyter_contrib_core = pythonPackages.buildPythonPackage rec {
       pname = "jupyter_contrib_core";
       version = "0.3.3";
